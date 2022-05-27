@@ -26,9 +26,14 @@ Get-TerraformVersion
 
 ### Install a version
 
-To install a terraform, speicify a specific version:
+To install a terraform, specify a specific version:
 ```powershell
 Install-TerraformVersion -Version 1.2.1
+```
+
+You can also install the latest version:
+```powershell
+Install-TerraformVersion -Latest
 ```
 
 To reinstall terraform, you can add `-Force`:
