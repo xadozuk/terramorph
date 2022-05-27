@@ -20,28 +20,33 @@ function Get-TerraformVersion
         <a href="/terraform/1.2.1">terraform_1.2.1</a> A       /terraform/1.2.1
         <a href="/terraform/1.2.0">terraform_1.2.0</a> A       /terraform/1.2.0
         #>
-        $Links = Invoke-WebRequest -Uri $script:Terramorph.URI.ReleaseList | Select-Object -ExpandProperty Links
+        $Links = Invoke-WebRequest -Uri $script:Terramorph.URI.ReleaseList |
+            Select-Object -ExpandProperty Links
 
         $Links |
-            Where-Object { $_.href -match "^/terraform/.+" } |
+            # Remove non-semantic version (MAJOR.MINOR.PATCH.REVISION)
+            Where-Object { $_.href -match "^/terraform/\d+\.\d+\.\d+(\.\d+)?$" } |
             Select-Object -ExpandProperty href |
             Foreach-Object {
                 [PSCustomObject] @{
-                    Version = $_ -replace '/terraform/', ''
+                    Version = [Version]($_ -replace '/terraform/', '')
                 }
-            }
+            } |
+            Sort-Object Version -Descending
     }
     # Return installed version
     else
     {
         $GlobalVersion = Get-Content -Path $script:Terramorph.ConfigFile.GlobalTerraformVersion -ErrorAction SilentlyContinue
 
-        $InstalledVersions = Get-ChildItem -Path $script:Terramorph.Path.Versions | Foreach-Object {
-            [PSCustomObject] ([ordered] @{
-                Version   = $_.BaseName
-                IsDefault = $GlobalVersion -eq $_.BaseName
-            })
-        }
+        $InstalledVersions = Get-ChildItem -Path $script:Terramorph.Path.Versions |
+            Foreach-Object {
+                [PSCustomObject] ([ordered] @{
+                    Version   = [Version] $_.BaseName
+                    IsDefault = $GlobalVersion -eq $_.BaseName
+                })
+            } |
+            Sort-Object Version -Descending
 
         if($Current)
         {

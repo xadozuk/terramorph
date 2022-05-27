@@ -3,7 +3,7 @@ function Set-TerraformVersion
     [CmdletBinding(SupportsShouldProcess)]
     param(
         [Parameter(Mandatory, Position=0)]
-        [string] $Version
+        [Version] $Version
     )
 
     if($Version -notin @(Get-TerraformVersion).Version)
