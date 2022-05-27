@@ -22,7 +22,7 @@ jobs:
       - name: Lint with PSScriptAnalyzer
         shell: pwsh
         run: |
-          Invoke-ScriptAnalyzer -Path terramoprh -Recurse
+          Invoke-ScriptAnalyzer -Path terramorph -Recurse
 
   test:
     name: Test with Pester
