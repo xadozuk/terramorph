@@ -10,8 +10,7 @@ function Install-TerraformVersion
         [Parameter()]
         [switch] $Force,
 
-        [parameter(
-            ParameterSetName = 'Latest')]
+        [Parameter(ParameterSetName="Latest")]
         [switch] $Latest
     )
     if ($Latest)
