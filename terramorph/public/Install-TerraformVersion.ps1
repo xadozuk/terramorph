@@ -3,7 +3,7 @@ function Install-TerraformVersion
     [CmdletBinding()]
     param(
         [Parameter(Mandatory, Position=0)]
-        [string] $Version,
+        [Version] $Version,
 
         [Parameter()]
         [switch] $Force
@@ -22,18 +22,32 @@ function Install-TerraformVersion
         Get-Item -Path $VersionPath | Remove-Item -Force -Recurse
     }
 
-    New-Item -Path $VersionPath -ItemType Directory | Out-Null
-
     $VersionUri     = Get-TerraformReleaseUri -Version $Version
     $TempFilePath   = [IO.Path]::GetTempFileName()
 
     Write-Verbose "Downloading terraform $Version from $VersionUri"
     $WebClient = [Net.WebClient]::new()
-    $WebClient.DownloadFile($VersionUri, $TempFilePath)
+
+    try
+    {
+        $WebClient.DownloadFile($VersionUri, $TempFilePath)
+    }
+    catch [System.Net.WebException]
+    {
+        if($_.Exception.Response.StatusCode -eq "NotFound")
+        {
+            Write-Error "Version $Version is not available on releases.hashicorp.com"
+            exit
+        }
+
+        throw $_
+    }
 
     # TODO: Validate checksum
 
     Write-Verbose "Installing terraform $Version into $VersionPath"
+
+    New-Item -Path $VersionPath -ItemType Directory | Out-Null
     Expand-Archive -Path $TempFilePath -DestinationPath $VersionPath -Force
 
     [PSCustomObject] @{
