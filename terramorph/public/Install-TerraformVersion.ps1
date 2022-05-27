@@ -3,8 +3,8 @@ function Install-TerraformVersion
     [CmdletBinding(DefaultParameterSetName ='Version')]
     param(
         [Parameter(Mandatory, 
-            ParameterSetName = 'Version', 
-            Position=0)]
+                   ParameterSetName="Version", 
+                   Position=0)]
         [string] $Version,
 
         [Parameter()]
