@@ -13,9 +13,13 @@ function Install-TerraformVersion
         [Parameter(ParameterSetName="Latest")]
         [switch] $Latest
     )
+
     if ($Latest)
     {
-        $Version = (Get-TerraformVersion -all | Sort-Object -Property Version | Select-Object -Last 1).Version
+        $Version = Get-TerraformVersion -All | 
+            Select-Object -ExpandProperty Version |
+            Sort-Object -Descending |
+            Select-Object -First 1
     }
     $VersionPath = Join-Path -Path $script:Terramorph.Path.Versions -ChildPath $Version
 
