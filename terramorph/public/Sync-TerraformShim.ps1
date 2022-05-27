@@ -2,7 +2,7 @@ function Sync-TerraformShim
 {
     [CmdletBinding()]
     param()
-    
+
     $GlobalVersion = Get-Content -Path $script:Terramorph.ConfigFile.GlobalTerraformVersion -ErrorAction SilentlyContinue
 
     if([string]::IsNullOrWhiteSpace($GlobalVersion))
@@ -21,7 +21,7 @@ function Sync-TerraformShim
     }
 
     Write-Verbose "Shimming terraform $GlobalVersion with '$($Params.Path)'"
-    
+
     # Because windows required admin privilege to create symbolic link, we will simply copy terraform binary
     if($IsWindows)
     {

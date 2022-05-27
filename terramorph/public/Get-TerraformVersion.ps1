@@ -1,6 +1,7 @@
 function Get-TerraformVersion
 {
     [CmdletBinding(DefaultParameterSetName="Local")]
+    [OutputType([object[]])]
     param(
         [Parameter(ParameterSetName="Online")]
         [switch] $All,
@@ -24,7 +25,7 @@ function Get-TerraformVersion
         $Links |
             Where-Object { $_.href -match "^/terraform/.+" } |
             Select-Object -ExpandProperty href |
-            Foreach-Object { 
+            Foreach-Object {
                 [PSCustomObject] @{
                     Version = $_ -replace '/terraform/', ''
                 }

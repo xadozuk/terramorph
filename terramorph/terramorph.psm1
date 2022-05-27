@@ -5,7 +5,7 @@ $Private = @(Get-ChildItem -Path "$PSScriptRoot\private\*.ps1" -Recurse -ErrorAc
 
 foreach($import in @($Private + $Public))
 {
-    try 
+    try
     {
         . $import.FullName
     }
@@ -15,7 +15,7 @@ foreach($import in @($Private + $Public))
     }
 }
 
-Export-ModuleMember -Function @($Public.Basename + $Private.Basename)
+Export-ModuleMember -Function $Public.Basename
 
 # Bootstrap
 try

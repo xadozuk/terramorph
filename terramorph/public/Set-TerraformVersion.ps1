@@ -1,6 +1,6 @@
 function Set-TerraformVersion
 {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
     param(
         [Parameter(Mandatory, Position=0)]
         [string] $Version
@@ -11,8 +11,16 @@ function Set-TerraformVersion
         Write-Error "Terraform version $Version is not installed.`nInstall it with 'Install-TerraformVersion -Version $Version' first."
         exit
     }
-    
-    $Version | Out-File -FilePath $script:Terramorph.ConfigFile.GlobalTerraformVersion
 
-    Sync-TerraformShim
+    if($PSCmdlet.ShouldProcess("Set global terraform version to $Version", "global", "SetVersion"))
+    {
+        $Version | Out-File -FilePath $script:Terramorph.ConfigFile.GlobalTerraformVersion
+
+        Sync-TerraformShim
+
+        return [PSCustomObject] @{
+            Version     = $Version
+            IsDefault   = $true
+        }
+    }
 }

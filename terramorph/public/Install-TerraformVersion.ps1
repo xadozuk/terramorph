@@ -23,7 +23,7 @@ function Install-TerraformVersion
     }
 
     New-Item -Path $VersionPath -ItemType Directory | Out-Null
-    
+
     $VersionUri     = Get-TerraformReleaseUri -Version $Version
     $TempFilePath   = [IO.Path]::GetTempFileName()
 
@@ -35,4 +35,9 @@ function Install-TerraformVersion
 
     Write-Verbose "Installing terraform $Version into $VersionPath"
     Expand-Archive -Path $TempFilePath -DestinationPath $VersionPath -Force
+
+    [PSCustomObject] @{
+        Version     = $Version
+        Installed   = $true
+    }
 }
