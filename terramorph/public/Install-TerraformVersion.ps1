@@ -1,14 +1,24 @@
 function Install-TerraformVersion
 {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName="Version")]
     param(
         [Parameter(Mandatory, Position=0)]
         [Version] $Version,
-
+        
         [Parameter()]
-        [switch] $Force
+        [switch] $Force,
+
+        [Parameter(ParameterSetName="Latest")]
+        [switch] $Latest
     )
 
+    if ($Latest)
+    {
+        $Version = Get-TerraformVersion -All | 
+            Select-Object -ExpandProperty Version |
+            Sort-Object -Descending |
+            Select-Object -First 1
+    }
     $VersionPath = Join-Path -Path $script:Terramorph.Path.Versions -ChildPath $Version
 
     if((Test-Path -Path $VersionPath))
