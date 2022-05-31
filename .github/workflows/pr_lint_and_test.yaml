@@ -19,7 +19,17 @@ jobs:
       - name: Lint with PSScriptAnalyzer
         shell: pwsh
         run: |
-          Invoke-ScriptAnalyzer -Path terramorph -Recurse
+          Invoke-ScriptAnalyzer -Path terramorph -Recurse -OutVariable issues
+          $errors   = $issues.Where({$_.Severity -eq 'Error'})
+          $warnings = $issues.Where({$_.Severity -eq 'Warning'})
+          if ($errors)
+          {
+              Write-Error "There were $($errors.Count) errors and $($warnings.Count) warnings total." -ErrorAction Stop
+          }
+          else
+          {
+              Write-Warning "There were $($errors.Count) errors and $($warnings.Count) warnings total."
+          }
 
   test:
     name: Test with Pester
