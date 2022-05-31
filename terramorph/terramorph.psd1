@@ -12,6 +12,7 @@
 RootModule = './terramorph.psm1'
 
 # Version number of this module.
+# Will be automatically updated during release through Github Actions
 ModuleVersion = '0.0.1'
 
 # Supported PSEditions
@@ -104,7 +105,7 @@ PrivateData = @{
         Tags = @('PSEdition_Core', 'Windows', 'Linux')
 
         # A URL to the license for this module.
-        LicenseUri = 'http://www.apache.org/licenses/LICENSE-2.0'
+        LicenseUri = 'https://github.com/xadozuk/terramorph/blob/master/LICENSE'
 
         # A URL to the main website for this project.
         ProjectUri = 'https://github.com/xadozuk/terramorph'
