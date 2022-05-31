@@ -4,6 +4,14 @@ Terraform version manager for PowerShell
 
 ## Install
 
+### Install PowerShell module
+
+```powershell
+Install-Module -Name terramorph
+```
+
+### Configure Terramorph
+
 To add terramorph shim folder into your PATH:
 
 ```powershell
