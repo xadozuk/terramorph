@@ -1,4 +1,5 @@
-$RootPath = Join-Path -Path $HOME -ChildPath ".terramorph"
+$RootPath = if($env:TERRAMORPH_HOME) { $env:TERRAMORPH_HOME }
+            else { Join-Path -Path $HOME -ChildPath ".terramorph" }
 
 $script:Terramorph = @{
     Path = @{
@@ -11,9 +12,9 @@ $script:Terramorph = @{
         GlobalTerraformVersion = Join-Path -Path $RootPath -ChildPath "terraform-version"
     }
 
-    URI = @{
-        ReleaseList = "https://releases.hashicorp.com/terraform"
-        Release     = "https://releases.hashicorp.com/terraform/{0}/terraform_{0}_{1}_{2}.zip"
-        Checksum    = "https://releases.hashicorp.com/terraform/{0}/terraform_{0}_SHA256SUMS"
+    TerraformBinaries = @{
+        ReleasesBaseUrl         = "https://releases.hashicorp.com/terraform"
+        FileNameFormat          = "terraform_{0}_{1}_{2}.zip"
+        ChecksumFileNameFormat  = "terraform_{0}_SHA256SUMS"
     }
 }
