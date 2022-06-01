@@ -3,7 +3,7 @@ function Get-TerraformReleaseInfo
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
-        [string] $Version
+        [Version] $Version
     )
 
     $Arch   = if([Environment]::Is64BitOperatingSystem) { "amd64" }
