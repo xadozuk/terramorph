@@ -1,12 +1,9 @@
 function Test-TerramorphInPath
 {
     [CmdletBinding()]
-    param(
-        [Parameter()]
-        [ValidateSet("User", "Process")]
-        [string] $Scope = "Process"
-    )
+    param()
 
-    $AllPaths = [Environment]::GetEnvironmentVariable('PATH', $Scope) -split [IO.Path]::PathSeparator
-    return $AllPaths -contains $script:Terramorph.Path.Shims
+    $Paths = $env:PATH -split [IO.Path]::PathSeparator
+
+    $Paths -contains $script:Terramorph.Path.Shims
 }
