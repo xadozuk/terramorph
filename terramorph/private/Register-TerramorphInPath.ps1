@@ -24,6 +24,12 @@ function Register-TerramorphInPath
 
             if($ProfileContent -notcontains $script:Terramorph.Profile.ScriptLine)
             {
+                # Create profile file if it doesn't exists
+                if(-not (Test-Path -Path $PROFILE.CurrentUserAllHosts))
+                {
+                    New-Item -Path $PROFILE.CurrentUserAllHosts -ItemType File -Force | Out-Null
+                }
+
                 $ProfileContent += "$($script:Terramorph.Profile.ScriptLine)"
                 $ProfileContent | Out-File -FilePath $PROFILE.CurrentUserAllHosts
             }
