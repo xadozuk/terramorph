@@ -10,6 +10,8 @@ function Sync-TerraformShim
         throw "Global terraform version not set.`nUse 'Set-TerraformVersion -Version <version>' to set the global version."
     }
 
+    Assert-TerraformVersionInstalled -Version $GlobalVersion
+
     $ReleaseInfo = Get-TerraformReleaseInfo -Version $GlobalVersion
 
     $Params = @{

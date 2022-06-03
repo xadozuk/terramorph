@@ -6,10 +6,7 @@ function Set-TerraformVersion
         [Version] $Version
     )
 
-    if($Version -notin @(Get-TerraformVersion).Version)
-    {
-        throw "Terraform version $Version is not installed.`nInstall it with 'Install-TerraformVersion -Version $Version' first."
-    }
+    Assert-TerraformVersionInstalled -Version $Version
 
     if($PSCmdlet.ShouldProcess("Set global terraform version to $Version", "global", "SetVersion"))
     {
