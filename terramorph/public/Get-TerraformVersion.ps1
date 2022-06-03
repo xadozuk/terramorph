@@ -20,7 +20,7 @@ function Get-TerraformVersion
         <a href="/terraform/1.2.1">terraform_1.2.1</a> A       /terraform/1.2.1
         <a href="/terraform/1.2.0">terraform_1.2.0</a> A       /terraform/1.2.0
         #>
-        $Links = Invoke-WebRequest -Uri $script:Terramorph.URI.ReleaseList |
+        $Links = Invoke-WebRequest -Uri $script:Terramorph.TerraformBinaries.ReleasesBaseUrl |
             Select-Object -ExpandProperty Links
 
         $Links |
@@ -39,7 +39,8 @@ function Get-TerraformVersion
     {
         $GlobalVersion = Get-Content -Path $script:Terramorph.ConfigFile.GlobalTerraformVersion -ErrorAction SilentlyContinue
 
-        $InstalledVersions = Get-ChildItem -Path $script:Terramorph.Path.Versions |
+        # Silence error, if the path doesn't exist it will return an empty array
+        $InstalledVersions = Get-ChildItem -Path $script:Terramorph.Path.Versions -ErrorAction SilentlyContinue |
             Foreach-Object {
                 [PSCustomObject] ([ordered] @{
                     Version   = [Version] $_.BaseName

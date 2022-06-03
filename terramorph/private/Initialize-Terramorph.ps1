@@ -15,12 +15,12 @@ function Initialize-Terramorph
     $Root.Attributes = $Root.Attributes -bor "Hidden"
 
     # PATH management
-    if(-not (Test-TerramorphInPath -Scope Process))
+    if(-not (Test-TerramorphInPath))
     {
-        Install-TerramorphInPath -Scope Process
+        Register-TerramorphInPath
 
         Write-Warning ("Terramorph is not present in the `$PATH`n" +
                       "It has been automatically added to the current process`n" +
-                      "You can add it to your user session by executing the command 'Install-Terramorph'")
+                      "You can add it to your user profile by executing the command 'Install-Terramorph'")
     }
 }

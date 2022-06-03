@@ -3,20 +3,21 @@ function Sync-TerraformShim
     [CmdletBinding()]
     param()
 
-    $GlobalVersion = Get-Content -Path $script:Terramorph.ConfigFile.GlobalTerraformVersion -ErrorAction SilentlyContinue
+    $GlobalVersion = [Version](Get-Content -Path $script:Terramorph.ConfigFile.GlobalTerraformVersion -ErrorAction SilentlyContinue)
 
     if([string]::IsNullOrWhiteSpace($GlobalVersion))
     {
-        Write-Error "Global terraform version not set.`nUse 'Set-TerraformVersion -Version <version>' to set the global version."
-        exit
+        throw "Global terraform version not set.`nUse 'Set-TerraformVersion -Version <version>' to set the global version."
     }
 
-    $TerraformExecutable = Get-TerraformExecutableName
+    Assert-TerraformVersionInstalled -Version $GlobalVersion
+
+    $ReleaseInfo = Get-TerraformReleaseInfo -Version $GlobalVersion
 
     $Params = @{
         ItemType    = "SymbolicLink"
-        Target      = Join-Path -Path $script:Terramorph.Path.Versions -ChildPath $GlobalVersion -AdditionalChildPath $TerraformExecutable
-        Path        = Join-Path -Path $script:Terramorph.Path.Shims -ChildPath $TerraformExecutable
+        Target      = Join-Path -Path $script:Terramorph.Path.Versions -ChildPath $GlobalVersion -AdditionalChildPath $ReleaseInfo.ExecutableName
+        Path        = Join-Path -Path $script:Terramorph.Path.Shims -ChildPath $ReleaseInfo.ExecutableName
         Force       = $true
     }
 
