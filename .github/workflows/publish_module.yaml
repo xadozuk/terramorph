@@ -11,6 +11,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Pester
+        shell: pwsh
+        run: |
+          Invoke-Pester tests
+
       - name: Build and publish
         env:
           NUGET_KEY: ${{ secrets.NUGET_KEY }}
