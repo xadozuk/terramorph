@@ -25,11 +25,11 @@ function Get-TerraformVersion
 
         $Links |
             # Remove non-semantic version (MAJOR.MINOR.PATCH.REVISION)
-            Where-Object { $_.href -match "^/terraform/\d+\.\d+\.\d+(\.\d+)?$" } |
+            Where-Object { $_.href -match "^/terraform/\d+\.\d+\.\d+(\.\d+)?/?$" } |
             Select-Object -ExpandProperty href |
             Foreach-Object {
                 [PSCustomObject] @{
-                    Version = [Version]($_ -replace '/terraform/', '')
+                    Version = [Version]($_.TrimEnd('/') -replace '/terraform/', '')
                 }
             } |
             Sort-Object Version -Descending
